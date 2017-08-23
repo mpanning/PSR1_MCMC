@@ -1,0 +1,1176 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module rayleigh_python ! in 
+    interface  ! in :rayleigh_python
+        subroutine rayleigh(epsarg,npow,dt,fnyquist,nbran,cmin,cmax,maxlyr,modelfile,modearray,nmodes) ! in :rayleigh_python:rayleigh_python.f
+            real*8 intent(in) :: epsarg
+            integer*4 intent(in) :: npow
+            real*8 intent(in) :: dt
+            real*8 intent(in) :: fnyquist
+            integer*4 intent(in) :: nbran
+            real*8 intent(in) :: cmin
+            real*8 intent(in) :: cmax
+            integer*4 intent(in) :: maxlyr
+            character*256 :: modelfile
+            real*8 dimension(7,1000),intent(out) :: modearray
+            integer*4 intent(out) :: nmodes
+        end subroutine rayleigh
+        subroutine detqn(wdim,knt,det,ifeif,nerr) ! in :rayleigh_python:rayleigh_python.f
+            real*8 :: wdim
+            integer :: knt
+            real*8 :: det
+            integer :: ifeif
+            integer :: nerr
+            real*8 dimension(5,1500) :: a
+            real*4 dimension(1500) :: dcda
+            real*4 dimension(1500) :: dcdb
+            real*4 dimension(1500) :: dcdrh
+            real*4 dimension(1500) :: dcdxi
+            real*4 dimension(1500) :: y1
+            real*4 dimension(1500) :: dy1dr
+            real*4 dimension(1500) :: y2
+            real*4 dimension(1500) :: dy2dr
+            real*4 dimension(22500) :: dum
+            integer :: ls
+            integer :: maxlayr
+            integer :: nic
+            integer :: noc
+            integer :: nsl
+            integer :: nicp1
+            integer :: nocp1
+            integer :: nslp1
+            integer :: n
+            real*8 :: pi
+            real*8 :: rn
+            real*8 :: vn
+            real*8 :: wn
+            real*8 :: w
+            real*8 :: wsq
+            real*8 :: wray
+            real*8 :: qinv
+            real*8 :: cg
+            real*8 :: tref
+            real*8 :: fct
+            real*8 :: eps
+            real*8 :: fl
+            real*8 :: fl1
+            real*8 :: fl2
+            real*8 :: fl3
+            real*8 :: sfl3
+            integer :: nord
+            integer :: l
+            integer :: kount
+            integer :: knsw
+            integer :: ifanis
+            integer :: iback
+            real*8 dimension(1500) :: r
+            real*8 dimension(1500) :: fmu
+            real*8 dimension(1500) :: flam
+            real*8 dimension(1500) :: qshear
+            real*8 dimension(1500) :: qkappa
+            real*8 dimension(1500) :: xa2
+            real*8 dimension(1500) :: xlam
+            real*8 dimension(1500) :: rho
+            real*8 dimension(3,1500) :: qro
+            real*8 dimension(1500) :: g
+            real*8 dimension(3,1500) :: qg
+            real*8 dimension(1500) :: fcon
+            real*8 dimension(3,1500) :: fspl
+            real*8 dimension(1500) :: lcon
+            real*8 dimension(3,1500) :: lspl
+            real*8 dimension(1500) :: ncon
+            real*8 dimension(3,1500) :: nspl
+            real*8 dimension(1500) :: ccon
+            real*8 dimension(3,1500) :: cspl
+            real*8 dimension(1500) :: acon
+            real*8 dimension(3,1500) :: aspl
+            common /eifx/ a,dcda,dcdb,dcdrh,dcdxi,y1,dy1dr,y2,dy2dr,dum
+            common /stdep/ ls,maxlayr
+            common /rindx/ nic,noc,nsl,nicp1,nocp1,nslp1,n
+            common /bits/ pi,rn,vn,wn,w,wsq,wray,qinv,cg,tref,fct,eps,fl,fl1,fl2,fl3,sfl3,nord,l,kount,knsw,ifanis,iback
+            common r,fmu,flam,qshear,qkappa,xa2,xlam,rho,qro,g,qg,fcon,fspl,lcon,lspl,ncon,nspl,ccon,cspl,acon,aspl
+        end subroutine detqn
+        subroutine norm(f,iexp,nvec) ! in :rayleigh_python:rayleigh_python.f
+            real*8 dimension(8) :: f
+            integer :: iexp
+            integer :: nvec
+        end subroutine norm
+        subroutine derms(iq,z,f,fp,iknt,qff,qll,qaa) ! in :rayleigh_python:rayleigh_python.f
+            integer :: iq
+            real*8 :: z
+            real*8 dimension(5) :: f
+            real*8 dimension(5) :: fp
+            integer :: iknt
+            real*8 :: qff
+            real*8 :: qll
+            real*8 :: qaa
+            real*8 :: pi
+            real*8 :: rn
+            real*8 :: vn
+            real*8 :: wn
+            real*8 :: w
+            real*8 :: wsq
+            real*8 :: wray
+            real*8 :: qinv
+            real*8 :: cg
+            real*8 :: tref
+            real*8 :: fct
+            real*8 :: eps
+            real*8 :: fl
+            real*8 :: fl1
+            real*8 :: fl2
+            real*8 :: fl3
+            real*8 :: sfl3
+            integer :: nord
+            integer :: l
+            integer :: kount
+            integer :: knsw
+            integer :: ifanis
+            integer :: iback
+            real*8 dimension(1500) :: r
+            real*8 dimension(1500) :: fmu
+            real*8 dimension(1500) :: flam
+            real*8 dimension(1500) :: qshear
+            real*8 dimension(1500) :: qkappa
+            real*8 dimension(1500) :: xa2
+            real*8 dimension(1500) :: xlam
+            real*8 dimension(1500) :: rho
+            real*8 dimension(3,1500) :: qro
+            real*8 dimension(1500) :: g
+            real*8 dimension(3,1500) :: qg
+            real*8 dimension(1500) :: fcon
+            real*8 dimension(3,1500) :: fspl
+            real*8 dimension(1500) :: lcon
+            real*8 dimension(3,1500) :: lspl
+            real*8 dimension(1500) :: ncon
+            real*8 dimension(3,1500) :: nspl
+            real*8 dimension(1500) :: ccon
+            real*8 dimension(3,1500) :: cspl
+            real*8 dimension(1500) :: acon
+            real*8 dimension(3,1500) :: aspl
+            common /bits/ pi,rn,vn,wn,w,wsq,wray,qinv,cg,tref,fct,eps,fl,fl1,fl2,fl3,sfl3,nord,l,kount,knsw,ifanis,iback
+            common r,fmu,flam,qshear,qkappa,xa2,xlam,rho,qro,g,qg,fcon,fspl,lcon,lspl,ncon,nspl,ccon,cspl,acon,aspl
+        end subroutine derms
+        subroutine dermf(iq,z,f,fp,iknt,qff) ! in :rayleigh_python:rayleigh_python.f
+            integer :: iq
+            real*8 :: z
+            real*8 dimension(5) :: f
+            real*8 dimension(5) :: fp
+            integer :: iknt
+            real*8 :: qff
+            real*8 :: pi
+            real*8 :: rn
+            real*8 :: vn
+            real*8 :: wn
+            real*8 :: w
+            real*8 :: wsq
+            real*8 :: wray
+            real*8 :: qinv
+            real*8 :: cg
+            real*8 :: tref
+            real*8 :: fct
+            real*8 :: eps
+            real*8 :: fl
+            real*8 :: fl1
+            real*8 :: fl2
+            real*8 :: fl3
+            real*8 :: sfl3
+            integer :: nord
+            integer :: l
+            integer :: kount
+            integer :: knsw
+            integer :: ifanis
+            integer :: iback
+            real*8 dimension(1500) :: r
+            real*8 dimension(1500) :: fmu
+            real*8 dimension(1500) :: flam
+            real*8 dimension(1500) :: qshear
+            real*8 dimension(1500) :: qkappa
+            real*8 dimension(1500) :: xa2
+            real*8 dimension(1500) :: xlam
+            real*8 dimension(1500) :: rho
+            real*8 dimension(3,1500) :: qro
+            real*8 dimension(1500) :: g
+            real*8 dimension(3,1500) :: qg
+            real*8 dimension(1500) :: fcon
+            real*8 dimension(3,1500) :: fspl
+            real*8 dimension(1500) :: lcon
+            real*8 dimension(3,1500) :: lspl
+            real*8 dimension(1500) :: ncon
+            real*8 dimension(3,1500) :: nspl
+            real*8 dimension(1500) :: ccon
+            real*8 dimension(3,1500) :: cspl
+            real*8 dimension(1500) :: acon
+            real*8 dimension(3,1500) :: aspl
+            common /bits/ pi,rn,vn,wn,w,wsq,wray,qinv,cg,tref,fct,eps,fl,fl1,fl2,fl3,sfl3,nord,l,kount,knsw,ifanis,iback
+            common r,fmu,flam,qshear,qkappa,xa2,xlam,rho,qro,g,qg,fcon,fspl,lcon,lspl,ncon,nspl,ccon,cspl,acon,aspl
+        end subroutine dermf
+        subroutine sfbm(ass,iback) ! in :rayleigh_python:rayleigh_python.f
+            real*8 dimension(5) :: ass
+            integer :: iback
+        end subroutine sfbm
+        subroutine fsbm(ass,iback) ! in :rayleigh_python:rayleigh_python.f
+            real*8 dimension(5) :: ass
+            integer :: iback
+        end subroutine fsbm
+        subroutine fpsm(ls,ass) ! in :rayleigh_python:rayleigh_python.f
+            integer :: ls
+            real*8 dimension(5) :: ass
+            real*8 :: pi
+            real*8 :: rn
+            real*8 :: vn
+            real*8 :: wn
+            real*8 :: w
+            real*8 :: wsq
+            real*8 :: wray
+            real*8 :: qinv
+            real*8 :: cg
+            real*8 :: tref
+            real*8 :: fct
+            real*8 :: eps
+            real*8 :: fl
+            real*8 :: fl1
+            real*8 :: fl2
+            real*8 :: fl3
+            real*8 :: sfl3
+            integer :: nord
+            integer :: l
+            integer :: kount
+            integer :: knsw
+            integer :: ifanis
+            integer :: iback
+            real*8 dimension(1500) :: r
+            real*8 dimension(1500) :: fmu
+            real*8 dimension(1500) :: flam
+            real*8 dimension(1500) :: qshear
+            real*8 dimension(1500) :: qkappa
+            real*8 dimension(1500) :: xa2
+            real*8 dimension(1500) :: xlam
+            real*8 dimension(1500) :: rho
+            real*8 dimension(3,1500) :: qro
+            real*8 dimension(1500) :: g
+            real*8 dimension(3,1500) :: qg
+            real*8 dimension(1500) :: fcon
+            real*8 dimension(3,1500) :: fspl
+            real*8 dimension(1500) :: lcon
+            real*8 dimension(3,1500) :: lspl
+            real*8 dimension(1500) :: ncon
+            real*8 dimension(3,1500) :: nspl
+            real*8 dimension(1500) :: ccon
+            real*8 dimension(3,1500) :: cspl
+            real*8 dimension(1500) :: acon
+            real*8 dimension(3,1500) :: aspl
+            common /bits/ pi,rn,vn,wn,w,wsq,wray,qinv,cg,tref,fct,eps,fl,fl1,fl2,fl3,sfl3,nord,l,kount,knsw,ifanis,iback
+            common r,fmu,flam,qshear,qkappa,xa2,xlam,rho,qro,g,qg,fcon,fspl,lcon,lspl,ncon,nspl,ccon,cspl,acon,aspl
+        end subroutine fpsm
+        subroutine spsm(ls,ass) ! in :rayleigh_python:rayleigh_python.f
+            integer :: ls
+            real*8 dimension(5) :: ass
+            real*8 :: pi
+            real*8 :: rn
+            real*8 :: vn
+            real*8 :: wn
+            real*8 :: w
+            real*8 :: wsq
+            real*8 :: wray
+            real*8 :: qinv
+            real*8 :: cg
+            real*8 :: tref
+            real*8 :: fct
+            real*8 :: eps
+            real*8 :: fl
+            real*8 :: fl1
+            real*8 :: fl2
+            real*8 :: fl3
+            real*8 :: sfl3
+            integer :: nord
+            integer :: l
+            integer :: kount
+            integer :: knsw
+            integer :: ifanis
+            integer :: iback
+            real*8 dimension(1500) :: r
+            real*8 dimension(1500) :: fmu
+            real*8 dimension(1500) :: flam
+            real*8 dimension(1500) :: qshear
+            real*8 dimension(1500) :: qkappa
+            real*8 dimension(1500) :: xa2
+            real*8 dimension(1500) :: xlam
+            real*8 dimension(1500) :: rho
+            real*8 dimension(3,1500) :: qro
+            real*8 dimension(1500) :: g
+            real*8 dimension(3,1500) :: qg
+            real*8 dimension(1500) :: fcon
+            real*8 dimension(3,1500) :: fspl
+            real*8 dimension(1500) :: lcon
+            real*8 dimension(3,1500) :: lspl
+            real*8 dimension(1500) :: ncon
+            real*8 dimension(3,1500) :: nspl
+            real*8 dimension(1500) :: ccon
+            real*8 dimension(3,1500) :: cspl
+            real*8 dimension(1500) :: acon
+            real*8 dimension(3,1500) :: aspl
+            common /bits/ pi,rn,vn,wn,w,wsq,wray,qinv,cg,tref,fct,eps,fl,fl1,fl2,fl3,sfl3,nord,l,kount,knsw,ifanis,iback
+            common r,fmu,flam,qshear,qkappa,xa2,xlam,rho,qro,g,qg,fcon,fspl,lcon,lspl,ncon,nspl,ccon,cspl,acon,aspl
+        end subroutine spsm
+        subroutine sprpmn(jf,jl,f,h,nvesm,iexp) ! in :rayleigh_python:rayleigh_python.f
+            integer :: jf
+            integer :: jl
+            real*8 dimension(5) :: f
+            real*8 dimension(nvesm,10) :: h
+            integer, optional,check(shape(h,0)==nvesm),depend(h) :: nvesm=shape(h,0)
+            integer :: iexp
+            real*8 dimension(5,1500) :: ar
+            integer dimension(1500) :: inorm
+            integer dimension(33000) :: kdum
+            real*8 dimension(46) :: b
+            real*8 dimension(10) :: c
+            real*8 :: dx
+            real*8 dimension(8) :: step
+            real*8 :: stepf
+            integer :: maxo
+            integer :: in
+            real*8 :: pi
+            real*8 :: rn
+            real*8 :: vn
+            real*8 :: wn
+            real*8 :: w
+            real*8 :: wsq
+            real*8 :: wray
+            real*8 :: qinv
+            real*8 :: cg
+            real*8 :: tref
+            real*8 :: fct
+            real*8 :: eps
+            real*8 :: fl
+            real*8 :: fl1
+            real*8 :: fl2
+            real*8 :: fl3
+            real*8 :: sfl3
+            integer :: nord
+            integer :: l
+            integer :: kount
+            integer :: knsw
+            integer :: ifanis
+            integer :: iback
+            real*8 dimension(1500) :: r
+            real*8 dimension(1500) :: fmu
+            real*8 dimension(1500) :: flam
+            real*8 dimension(1500) :: qshear
+            real*8 dimension(1500) :: qkappa
+            real*8 dimension(1500) :: xa2
+            real*8 dimension(1500) :: xlam
+            real*8 dimension(1500) :: rho
+            real*8 dimension(3,1500) :: qro
+            real*8 dimension(1500) :: g
+            real*8 dimension(3,1500) :: qg
+            real*8 dimension(1500) :: fcon
+            real*8 dimension(3,1500) :: fspl
+            real*8 dimension(1500) :: lcon
+            real*8 dimension(3,1500) :: lspl
+            real*8 dimension(1500) :: ncon
+            real*8 dimension(3,1500) :: nspl
+            real*8 dimension(1500) :: ccon
+            real*8 dimension(3,1500) :: cspl
+            real*8 dimension(1500) :: acon
+            real*8 dimension(3,1500) :: aspl
+            common /eifx/ ar,inorm,kdum
+            common /shanks/ b,c,dx,step,stepf,maxo,in
+            common /bits/ pi,rn,vn,wn,w,wsq,wray,qinv,cg,tref,fct,eps,fl,fl1,fl2,fl3,sfl3,nord,l,kount,knsw,ifanis,iback
+            common r,fmu,flam,qshear,qkappa,xa2,xlam,rho,qro,g,qg,fcon,fspl,lcon,lspl,ncon,nspl,ccon,cspl,acon,aspl
+        end subroutine sprpmn
+        subroutine fprpmn(jf,jl,f,h,nvefm,iexp) ! in :rayleigh_python:rayleigh_python.f
+            integer :: jf
+            integer :: jl
+            real*8 dimension(5) :: f
+            real*8 dimension(nvefm,10) :: h
+            integer, optional,check(shape(h,0)==nvefm),depend(h) :: nvefm=shape(h,0)
+            integer :: iexp
+            real*8 dimension(5,1500) :: ar
+            integer dimension(1500) :: inorm
+            integer dimension(33000) :: kdum
+            real*8 dimension(46) :: b
+            real*8 dimension(10) :: c
+            real*8 :: dx
+            real*8 dimension(8) :: step
+            real*8 :: stepf
+            integer :: maxo
+            integer :: in
+            real*8 :: pi
+            real*8 :: rn
+            real*8 :: vn
+            real*8 :: wn
+            real*8 :: w
+            real*8 :: wsq
+            real*8 :: wray
+            real*8 :: qinv
+            real*8 :: cg
+            real*8 :: tref
+            real*8 :: fct
+            real*8 :: eps
+            real*8 :: fl
+            real*8 :: fl1
+            real*8 :: fl2
+            real*8 :: fl3
+            real*8 :: sfl3
+            integer :: nord
+            integer :: l
+            integer :: kount
+            integer :: knsw
+            integer :: ifanis
+            integer :: iback
+            real*8 dimension(1500) :: r
+            real*8 dimension(1500) :: fmu
+            real*8 dimension(1500) :: flam
+            real*8 dimension(1500) :: qshear
+            real*8 dimension(1500) :: qkappa
+            real*8 dimension(1500) :: xa2
+            real*8 dimension(1500) :: xlam
+            real*8 dimension(1500) :: rho
+            real*8 dimension(3,1500) :: qro
+            real*8 dimension(1500) :: g
+            real*8 dimension(3,1500) :: qg
+            real*8 dimension(1500) :: fcon
+            real*8 dimension(3,1500) :: fspl
+            real*8 dimension(1500) :: lcon
+            real*8 dimension(3,1500) :: lspl
+            real*8 dimension(1500) :: ncon
+            real*8 dimension(3,1500) :: nspl
+            real*8 dimension(1500) :: ccon
+            real*8 dimension(3,1500) :: cspl
+            real*8 dimension(1500) :: acon
+            real*8 dimension(3,1500) :: aspl
+            common /eifx/ ar,inorm,kdum
+            common /shanks/ b,c,dx,step,stepf,maxo,in
+            common /bits/ pi,rn,vn,wn,w,wsq,wray,qinv,cg,tref,fct,eps,fl,fl1,fl2,fl3,sfl3,nord,l,kount,knsw,ifanis,iback
+            common r,fmu,flam,qshear,qkappa,xa2,xlam,rho,qro,g,qg,fcon,fspl,lcon,lspl,ncon,nspl,ccon,cspl,acon,aspl
+        end subroutine fprpmn
+        subroutine zknt1(s,sp,f,fp,x,y,ifsol,isplit) ! in :rayleigh_python:rayleigh_python.f
+            real*8 dimension(*) :: s
+            real*8 dimension(*) :: sp
+            real*8 dimension(*) :: f
+            real*8 dimension(*) :: fp
+            real*8 :: x
+            real*8 :: y
+            integer :: ifsol
+            integer :: isplit
+            real*8 :: pi
+            real*8 :: rn
+            real*8 :: vn
+            real*8 :: wn
+            real*8 :: w
+            real*8 :: wsq
+            real*8 :: wray
+            real*8 :: qinv
+            real*8 :: cg
+            real*8 :: tref
+            real*8 :: fct
+            real*8 :: eps
+            real*8 :: fl
+            real*8 :: fl1
+            real*8 :: fl2
+            real*8 :: fl3
+            real*8 :: sfl3
+            integer :: nord
+            integer :: l
+            integer :: kount
+            integer :: knsw
+            integer :: ifanis
+            integer :: iback
+            common /bits/ pi,rn,vn,wn,w,wsq,wray,qinv,cg,tref,fct,eps,fl,fl1,fl2,fl3,sfl3,nord,l,kount,knsw,ifanis,iback
+        end subroutine zknt1
+        subroutine eifout(lsmin,nerr) ! in :rayleigh_python:rayleigh_python.f
+            integer :: lsmin
+            integer :: nerr
+            real*8 dimension(5,1500) :: a
+            integer dimension(1500) :: inorm
+            integer dimension(33000) :: kdum
+            integer :: nic
+            integer :: noc
+            integer :: nsl
+            integer :: nicp1
+            integer :: nocp1
+            integer :: nslp1
+            integer :: n
+            real*8 :: pi
+            real*8 :: rn
+            real*8 :: vn
+            real*8 :: wn
+            real*8 :: w
+            real*8 :: wsq
+            real*8 :: wray
+            real*8 :: qinv
+            real*8 :: cg
+            real*8 :: tref
+            real*8 :: fct
+            real*8 :: eps
+            real*8 :: fl
+            real*8 :: fl1
+            real*8 :: fl2
+            real*8 :: fl3
+            real*8 :: sfl3
+            integer :: nord
+            integer :: l
+            integer :: kount
+            integer :: knsw
+            integer :: ifanis
+            integer :: iback
+            real*8 dimension(1500) :: r
+            real*8 dimension(1500) :: fmu
+            real*8 dimension(1500) :: flam
+            real*8 dimension(1500) :: qshear
+            real*8 dimension(1500) :: qkappa
+            real*8 dimension(1500) :: xa2
+            real*8 dimension(1500) :: xlam
+            real*8 dimension(1500) :: rho
+            real*8 dimension(3,1500) :: qro
+            real*8 dimension(1500) :: g
+            real*8 dimension(3,1500) :: qg
+            real*8 dimension(1500) :: fcon
+            real*8 dimension(3,1500) :: fspl
+            real*8 dimension(1500) :: lcon
+            real*8 dimension(3,1500) :: lspl
+            real*8 dimension(1500) :: ncon
+            real*8 dimension(3,1500) :: nspl
+            real*8 dimension(1500) :: ccon
+            real*8 dimension(3,1500) :: cspl
+            real*8 dimension(1500) :: acon
+            real*8 dimension(3,1500) :: aspl
+            common /eifx/ a,inorm,kdum
+            common /rindx/ nic,noc,nsl,nicp1,nocp1,nslp1,n
+            common /bits/ pi,rn,vn,wn,w,wsq,wray,qinv,cg,tref,fct,eps,fl,fl1,fl2,fl3,sfl3,nord,l,kount,knsw,ifanis,iback
+            common r,fmu,flam,qshear,qkappa,xa2,xlam,rho,qro,g,qg,fcon,fspl,lcon,lspl,ncon,nspl,ccon,cspl,acon,aspl
+        end subroutine eifout
+        subroutine quod(ls,zi) ! in :rayleigh_python:rayleigh_python.f
+            integer :: ls
+            real*8 dimension(4) :: zi
+            real*8 dimension(5,1500) :: a
+            integer dimension(34500) :: kdum
+            integer :: nic
+            integer :: noc
+            integer :: nsl
+            integer :: nicp1
+            integer :: nocp1
+            integer :: nslp1
+            integer :: n
+            real*8 :: pi
+            real*8 :: rn
+            real*8 :: vn
+            real*8 :: wn
+            real*8 :: w
+            real*8 :: wsq
+            real*8 :: wray
+            real*8 :: qinv
+            real*8 :: cg
+            real*8 :: tref
+            real*8 :: fct
+            real*8 :: eps
+            real*8 :: fl
+            real*8 :: fl1
+            real*8 :: fl2
+            real*8 :: fl3
+            real*8 :: sfl3
+            integer :: nord
+            integer :: l
+            integer :: kount
+            integer :: knsw
+            integer :: ifanis
+            integer :: iback
+            real*8 dimension(1500) :: r
+            real*8 dimension(1500) :: fmu
+            real*8 dimension(1500) :: flam
+            real*8 dimension(1500) :: qshear
+            real*8 dimension(1500) :: qkappa
+            real*8 dimension(1500) :: xa2
+            real*8 dimension(1500) :: xlam
+            real*8 dimension(1500) :: rho
+            real*8 dimension(3,1500) :: qro
+            real*8 dimension(1500) :: g
+            real*8 dimension(3,1500) :: qg
+            real*8 dimension(1500) :: fcon
+            real*8 dimension(3,1500) :: fspl
+            real*8 dimension(1500) :: lcon
+            real*8 dimension(3,1500) :: lspl
+            real*8 dimension(1500) :: ncon
+            real*8 dimension(3,1500) :: nspl
+            real*8 dimension(1500) :: ccon
+            real*8 dimension(3,1500) :: cspl
+            real*8 dimension(1500) :: acon
+            real*8 dimension(3,1500) :: aspl
+            common /eifx/ a,kdum
+            common /rindx/ nic,noc,nsl,nicp1,nocp1,nslp1,n
+            common /bits/ pi,rn,vn,wn,w,wsq,wray,qinv,cg,tref,fct,eps,fl,fl1,fl2,fl3,sfl3,nord,l,kount,knsw,ifanis,iback
+            common r,fmu,flam,qshear,qkappa,xa2,xlam,rho,qro,g,qg,fcon,fspl,lcon,lspl,ncon,nspl,ccon,cspl,acon,aspl
+        end subroutine quod
+        subroutine efprop(jf,jl,f) ! in :rayleigh_python:rayleigh_python.f
+            integer :: jf
+            integer :: jl
+            real*8 dimension(6) :: f
+            real*8 dimension(5,1500) :: ar
+            integer dimension(1500) :: inorm
+            integer dimension(33000) :: kdum
+            real*8 dimension(46) :: b
+            real*8 dimension(10) :: c
+            real*8 :: dx
+            real*8 dimension(8) :: step
+            real*8 :: stepf
+            integer :: maxo
+            integer :: in
+            integer :: nic
+            integer :: noc
+            integer :: nsl
+            integer :: nicp1
+            integer :: nocp1
+            integer :: nslp1
+            integer :: n
+            real*8 :: pi
+            real*8 :: rn
+            real*8 :: vn
+            real*8 :: wn
+            real*8 :: w
+            real*8 :: wsq
+            real*8 :: wray
+            real*8 :: qinv
+            real*8 :: cg
+            real*8 :: tref
+            real*8 :: fct
+            real*8 :: eps
+            real*8 :: fl
+            real*8 :: fl1
+            real*8 :: fl2
+            real*8 :: fl3
+            real*8 :: sfl3
+            integer :: nord
+            integer :: l
+            integer :: kount
+            integer :: knsw
+            integer :: ifanis
+            integer :: iback
+            real*8 dimension(1500) :: r
+            real*8 dimension(1500) :: fmu
+            real*8 dimension(1500) :: flam
+            real*8 dimension(1500) :: qshear
+            real*8 dimension(1500) :: qkappa
+            real*8 dimension(1500) :: xa2
+            real*8 dimension(1500) :: xlam
+            real*8 dimension(1500) :: rho
+            real*8 dimension(3,1500) :: qro
+            real*8 dimension(1500) :: g
+            real*8 dimension(3,1500) :: qg
+            real*8 dimension(1500) :: fcon
+            real*8 dimension(3,1500) :: fspl
+            real*8 dimension(1500) :: lcon
+            real*8 dimension(3,1500) :: lspl
+            real*8 dimension(1500) :: ncon
+            real*8 dimension(3,1500) :: nspl
+            real*8 dimension(1500) :: ccon
+            real*8 dimension(3,1500) :: cspl
+            real*8 dimension(1500) :: acon
+            real*8 dimension(3,1500) :: aspl
+            common /eifx/ ar,inorm,kdum
+            common /shanks/ b,c,dx,step,stepf,maxo,in
+            common /rindx/ nic,noc,nsl,nicp1,nocp1,nslp1,n
+            common /bits/ pi,rn,vn,wn,w,wsq,wray,qinv,cg,tref,fct,eps,fl,fl1,fl2,fl3,sfl3,nord,l,kount,knsw,ifanis,iback
+            common r,fmu,flam,qshear,qkappa,xa2,xlam,rho,qro,g,qg,fcon,fspl,lcon,lspl,ncon,nspl,ccon,cspl,acon,aspl
+        end subroutine efprop
+        subroutine esprop(jf,jl,f) ! in :rayleigh_python:rayleigh_python.f
+            integer :: jf
+            integer :: jl
+            real*8 dimension(8) :: f
+            real*8 dimension(5,1500) :: ar
+            integer dimension(1500) :: inorm
+            integer dimension(33000) :: kdum
+            real*8 dimension(46) :: b
+            real*8 dimension(10) :: c
+            real*8 :: dx
+            real*8 dimension(8) :: step
+            real*8 :: stepf
+            integer :: maxo
+            integer :: in
+            integer :: nic
+            integer :: noc
+            integer :: nsl
+            integer :: nicp1
+            integer :: nocp1
+            integer :: nslp1
+            integer :: n
+            real*8 :: pi
+            real*8 :: rn
+            real*8 :: vn
+            real*8 :: wn
+            real*8 :: w
+            real*8 :: wsq
+            real*8 :: wray
+            real*8 :: qinv
+            real*8 :: cg
+            real*8 :: tref
+            real*8 :: fct
+            real*8 :: eps
+            real*8 :: fl
+            real*8 :: fl1
+            real*8 :: fl2
+            real*8 :: fl3
+            real*8 :: sfl3
+            integer :: nord
+            integer :: l
+            integer :: kount
+            integer :: knsw
+            integer :: ifanis
+            integer :: iback
+            real*8 dimension(1500) :: r
+            real*8 dimension(1500) :: fmu
+            real*8 dimension(1500) :: flam
+            real*8 dimension(1500) :: qshear
+            real*8 dimension(1500) :: qkappa
+            real*8 dimension(1500) :: xa2
+            real*8 dimension(1500) :: xlam
+            real*8 dimension(1500) :: rho
+            real*8 dimension(3,1500) :: qro
+            real*8 dimension(1500) :: g
+            real*8 dimension(3,1500) :: qg
+            real*8 dimension(1500) :: fcon
+            real*8 dimension(3,1500) :: fspl
+            real*8 dimension(1500) :: lcon
+            real*8 dimension(3,1500) :: lspl
+            real*8 dimension(1500) :: ncon
+            real*8 dimension(3,1500) :: nspl
+            real*8 dimension(1500) :: ccon
+            real*8 dimension(3,1500) :: cspl
+            real*8 dimension(1500) :: acon
+            real*8 dimension(3,1500) :: aspl
+            common /eifx/ ar,inorm,kdum
+            common /shanks/ b,c,dx,step,stepf,maxo,in
+            common /rindx/ nic,noc,nsl,nicp1,nocp1,nslp1,n
+            common /bits/ pi,rn,vn,wn,w,wsq,wray,qinv,cg,tref,fct,eps,fl,fl1,fl2,fl3,sfl3,nord,l,kount,knsw,ifanis,iback
+            common r,fmu,flam,qshear,qkappa,xa2,xlam,rho,qro,g,qg,fcon,fspl,lcon,lspl,ncon,nspl,ccon,cspl,acon,aspl
+        end subroutine esprop
+        subroutine grav(g,rho,qro,r,n) ! in :rayleigh_python:rayleigh_python.f
+            real*8 dimension(1500) :: g
+            real*8 dimension(1500) :: rho
+            real*8 dimension(3,1500) :: qro
+            real*8 dimension(1500) :: r
+            integer :: n
+        end subroutine grav
+        subroutine sdepth(wdim,ls) ! in :rayleigh_python:rayleigh_python.f
+            real*8 :: wdim
+            integer :: ls
+            integer :: nic
+            integer :: noc
+            integer :: nsl
+            integer :: nicp1
+            integer :: nocp1
+            integer :: nslp1
+            integer :: n
+            real*8 :: pi
+            real*8 :: rn
+            real*8 :: vn
+            real*8 :: wn
+            real*8 :: w
+            real*8 :: wsq
+            real*8 :: wray
+            real*8 :: qinv
+            real*8 :: cg
+            real*8 :: tref
+            real*8 :: fct
+            real*8 :: eps
+            real*8 :: fl
+            real*8 :: fl1
+            real*8 :: fl2
+            real*8 :: fl3
+            real*8 :: sfl3
+            integer :: nord
+            integer :: l
+            integer :: kount
+            integer :: knsw
+            integer :: ifanis
+            integer :: iback
+            real*8 dimension(1500) :: r
+            real*8 dimension(1500) :: fmu
+            real*8 dimension(1500) :: flam
+            real*8 dimension(1500) :: qshear
+            real*8 dimension(1500) :: qkappa
+            real*8 dimension(1500) :: xa2
+            real*8 dimension(1500) :: xlam
+            real*8 dimension(1500) :: rho
+            real*8 dimension(3,1500) :: qro
+            real*8 dimension(1500) :: g
+            real*8 dimension(3,1500) :: qg
+            real*8 dimension(1500) :: fcon
+            real*8 dimension(3,1500) :: fspl
+            real*8 dimension(1500) :: lcon
+            real*8 dimension(3,1500) :: lspl
+            real*8 dimension(1500) :: ncon
+            real*8 dimension(3,1500) :: nspl
+            real*8 dimension(1500) :: ccon
+            real*8 dimension(3,1500) :: cspl
+            real*8 dimension(1500) :: acon
+            real*8 dimension(3,1500) :: aspl
+            common /rindx/ nic,noc,nsl,nicp1,nocp1,nslp1,n
+            common /bits/ pi,rn,vn,wn,w,wsq,wray,qinv,cg,tref,fct,eps,fl,fl1,fl2,fl3,sfl3,nord,l,kount,knsw,ifanis,iback
+            common r,fmu,flam,qshear,qkappa,xa2,xlam,rho,qro,g,qg,fcon,fspl,lcon,lspl,ncon,nspl,ccon,cspl,acon,aspl
+        end subroutine sdepth
+        subroutine startl(jf,jl,v,ls,q) ! in :rayleigh_python:rayleigh_python.f
+            integer :: jf
+            integer :: jl
+            real*8 dimension(1500) :: v
+            integer :: ls
+            real*8 :: q
+            integer :: nic
+            integer :: noc
+            integer :: nsl
+            integer :: nicp1
+            integer :: nocp1
+            integer :: nslp1
+            integer :: n
+            real*8 :: pi
+            real*8 :: rn
+            real*8 :: vn
+            real*8 :: wn
+            real*8 :: w
+            real*8 :: wsq
+            real*8 :: wray
+            real*8 :: qinv
+            real*8 :: cg
+            real*8 :: tref
+            real*8 :: fct
+            real*8 :: eps
+            real*8 :: fl
+            real*8 :: fl1
+            real*8 :: fl2
+            real*8 :: fl3
+            real*8 :: sfl3
+            integer :: nord
+            integer :: l
+            integer :: kount
+            integer :: knsw
+            integer :: ifanis
+            integer :: iback
+            real*8 dimension(1500) :: r
+            real*8 dimension(1500) :: fmu
+            real*8 dimension(1500) :: flam
+            real*8 dimension(1500) :: qshear
+            real*8 dimension(1500) :: qkappa
+            real*8 dimension(1500) :: xa2
+            real*8 dimension(1500) :: xlam
+            real*8 dimension(1500) :: rho
+            real*8 dimension(3,1500) :: qro
+            real*8 dimension(1500) :: g
+            real*8 dimension(3,1500) :: qg
+            real*8 dimension(1500) :: fcon
+            real*8 dimension(3,1500) :: fspl
+            real*8 dimension(1500) :: lcon
+            real*8 dimension(3,1500) :: lspl
+            real*8 dimension(1500) :: ncon
+            real*8 dimension(3,1500) :: nspl
+            real*8 dimension(1500) :: ccon
+            real*8 dimension(3,1500) :: cspl
+            real*8 dimension(1500) :: acon
+            real*8 dimension(3,1500) :: aspl
+            common /rindx/ nic,noc,nsl,nicp1,nocp1,nslp1,n
+            common /bits/ pi,rn,vn,wn,w,wsq,wray,qinv,cg,tref,fct,eps,fl,fl1,fl2,fl3,sfl3,nord,l,kount,knsw,ifanis,iback
+            common r,fmu,flam,qshear,qkappa,xa2,xlam,rho,qro,g,qg,fcon,fspl,lcon,lspl,ncon,nspl,ccon,cspl,acon,aspl
+        end subroutine startl
+        subroutine modeln(iin) ! in :rayleigh_python:rayleigh_python.f
+            integer :: iin
+            real*8 dimension(1500) :: vpv
+            real*8 dimension(1500) :: vph
+            real*8 dimension(1500) :: vsv
+            real*8 dimension(1500) :: vsh
+            real*8 dimension(1500) :: eta
+            integer dimension(34500) :: kdum
+            integer :: nic
+            integer :: noc
+            integer :: nsl
+            integer :: nicp1
+            integer :: nocp1
+            integer :: nslp1
+            integer :: n
+            real*8 dimension(4500) :: wrk
+            real*8 :: pi
+            real*8 :: rn
+            real*8 :: vn
+            real*8 :: wn
+            real*8 :: w
+            real*8 :: wsq
+            real*8 :: wray
+            real*8 :: qinv
+            real*8 :: cg
+            real*8 :: tref
+            real*8 :: fct
+            real*8 :: eps
+            real*8 :: fl
+            real*8 :: fl1
+            real*8 :: fl2
+            real*8 :: fl3
+            real*8 :: sfl3
+            integer :: nord
+            integer :: l
+            integer :: kount
+            integer :: knsw
+            integer :: ifanis
+            integer :: iback
+            real*8 dimension(1500) :: r
+            real*8 dimension(1500) :: fmu
+            real*8 dimension(1500) :: flam
+            real*8 dimension(1500) :: qshear
+            real*8 dimension(1500) :: qkappa
+            real*8 dimension(1500) :: xa2
+            real*8 dimension(1500) :: xlam
+            real*8 dimension(1500) :: rho
+            real*8 dimension(3,1500) :: qro
+            real*8 dimension(1500) :: g
+            real*8 dimension(3,1500) :: qg
+            real*8 dimension(1500) :: fcon
+            real*8 dimension(3,1500) :: fspl
+            real*8 dimension(1500) :: lcon
+            real*8 dimension(3,1500) :: lspl
+            real*8 dimension(1500) :: ncon
+            real*8 dimension(3,1500) :: nspl
+            real*8 dimension(1500) :: ccon
+            real*8 dimension(3,1500) :: cspl
+            real*8 dimension(1500) :: acon
+            real*8 dimension(3,1500) :: aspl
+            common /eifx/ vpv,vph,vsv,vsh,eta,kdum
+            common /rindx/ nic,noc,nsl,nicp1,nocp1,nslp1,n
+            common /arem/ wrk
+            common /bits/ pi,rn,vn,wn,w,wsq,wray,qinv,cg,tref,fct,eps,fl,fl1,fl2,fl3,sfl3,nord,l,kount,knsw,ifanis,iback
+            common r,fmu,flam,qshear,qkappa,xa2,xlam,rho,qro,g,qg,fcon,fspl,lcon,lspl,ncon,nspl,ccon,cspl,acon,aspl
+        end subroutine modeln
+        subroutine baylis(q,maxo1) ! in :rayleigh_python:rayleigh_python.f
+            real*8 :: q
+            integer :: maxo1
+            real*8 dimension(46) :: b
+            real*8 dimension(10) :: c
+            real*8 :: dx
+            real*8 dimension(8) :: step
+            real*8 :: stepf
+            integer :: maxo
+            integer :: i
+            common /shanks/ b,c,dx,step,stepf,maxo,i
+        end subroutine baylis
+        subroutine steps(eps) ! in :rayleigh_python:rayleigh_python.f
+            real*8 :: eps
+            real*8 dimension(46) :: b
+            real*8 dimension(10) :: c
+            real*8 :: dx
+            real*8 dimension(8) :: step
+            real*8 :: stepf
+            integer :: maxo
+            integer :: in
+            common /shanks/ b,c,dx,step,stepf,maxo,in
+        end subroutine steps
+        subroutine drspln(i1,i2,x,y,q,f) ! in :rayleigh_python:rayleigh_python.f
+            integer :: i1
+            integer :: i2
+            real*8 dimension(1500) :: x
+            real*8 dimension(1500) :: y
+            real*8 dimension(3,1500) :: q
+            real*8 dimension(3,1500) :: f
+        end subroutine drspln
+        subroutine rkdot(f,s,h,nvec,ni) ! in :rayleigh_python:rayleigh_python.f
+            real*8 dimension(8) :: f
+            real*8 dimension(8) :: s
+            real*8 dimension(nvec,10) :: h
+            integer, optional,check(shape(h,0)==nvec),depend(h) :: nvec=shape(h,0)
+            integer :: ni
+            real*8 dimension(46) :: b
+            real*8 dimension(10) :: c
+            real*8 :: dx
+            real*8 dimension(8) :: step
+            real*8 :: stepf
+            integer :: maxo
+            integer :: in
+            common /shanks/ b,c,dx,step,stepf,maxo,in
+        end subroutine rkdot
+        subroutine entry(w,imax,kei) ! in :rayleigh_python:rayleigh_python.f
+            real*8 :: w
+            integer :: imax
+            integer :: kei
+            real*8 dimension(9600) :: we
+            real*8 dimension(9600) :: de
+            integer dimension(4800) :: ke
+            real*8 dimension(4800) :: wtry
+            real*8 dimension(4800) :: bm
+            real*8 dimension(4800) :: um
+            common /mtab/ we,de,ke,wtry,bm,um
+        end subroutine entry
+        subroutine bfs(l,xsq,eps,fp) ! in :rayleigh_python:rayleigh_python.f
+            real*8 :: l
+            real*8 :: xsq
+            real*8 :: eps
+            real*8 :: fp
+        end subroutine bfs
+        subroutine ltable(mtype,epsarg,npow,dt,fnyquist,nbran,cmin,cmax,maxlyr,modearray,nmodes) ! in :rayleigh_python:ltable_python.f
+            integer*4 intent(in) :: mtype
+            real*8 intent(in) :: epsarg
+            integer*4 intent(in) :: npow
+            real*8 intent(in) :: dt
+            real*8 intent(in) :: fnyquist
+            integer*4 intent(in) :: nbran
+            real*8 intent(in) :: cmin
+            real*8 intent(in) :: cmax
+            integer*4 intent(in) :: maxlyr
+            real*8 dimension(7,1000),intent(out) :: modearray
+            integer*4 intent(out) :: nmodes
+            real*8 dimension(5,1500) :: a
+            real*4 dimension(1500) :: dcda
+            real*4 dimension(1500) :: dcdb
+            real*4 dimension(1500) :: dcdrh
+            real*4 dimension(1500) :: dcdxi
+            real*4 dimension(1500) :: y1
+            real*4 dimension(1500) :: dy1dr
+            real*4 dimension(1500) :: y2
+            real*4 dimension(1500) :: dy2dr
+            real*4 dimension(22500) :: dum
+            real*8 dimension(46) :: b
+            real*8 dimension(10) :: c
+            real*8 :: dx
+            real*8 dimension(8) :: step
+            real*8 :: stepf
+            integer :: maxo
+            integer :: in
+            integer :: nic
+            integer :: noc
+            integer :: nsl
+            integer :: nicp1
+            integer :: nocp1
+            integer :: nslp1
+            integer :: n
+            real*8 :: pi
+            real*8 :: rn
+            real*8 :: vn
+            real*8 :: wn
+            real*8 :: w
+            real*8 :: wsq
+            real*8 :: wray
+            real*8 :: qinv
+            real*8 :: cg
+            real*8 :: tref
+            real*8 :: fct
+            real*8 :: eps
+            real*8 :: fl
+            real*8 :: fl1
+            real*8 :: fl2
+            real*8 :: fl3
+            real*8 :: sfl3
+            integer :: nord
+            integer :: l
+            integer :: kount
+            integer :: knsw
+            integer :: ifanis
+            integer :: iback
+            integer :: ls
+            integer :: maxlayr
+            common /eifx/ a,dcda,dcdb,dcdrh,dcdxi,y1,dy1dr,y2,dy2dr,dum
+            common /shanks/ b,c,dx,step,stepf,maxo,in
+            common /rindx/ nic,noc,nsl,nicp1,nocp1,nslp1,n
+            common /bits/ pi,rn,vn,wn,w,wsq,wray,qinv,cg,tref,fct,eps,fl,fl1,fl2,fl3,sfl3,nord,l,kount,knsw,ifanis,iback
+            common /stdep/ ls,maxlayr
+        end subroutine ltable
+        subroutine ldetqn(fldum,wdum,kdum,ddum,ifeif,nerr) ! in :rayleigh_python:ltable_python.f
+            real*8 :: fldum
+            real*8 :: wdum
+            integer :: kdum
+            real*8 :: ddum
+            integer :: ifeif
+            integer :: nerr
+            real*8 dimension(46) :: b
+            real*8 dimension(10) :: c
+            real*8 :: dx
+            real*8 dimension(8) :: step
+            real*8 :: stepf
+            integer :: maxo
+            integer :: in
+            real*8 :: pi
+            real*8 :: rn
+            real*8 :: vn
+            real*8 :: wn
+            real*8 :: w
+            real*8 :: wsq
+            real*8 :: wray
+            real*8 :: qinv
+            real*8 :: cg
+            real*8 :: tref
+            real*8 :: fct
+            real*8 :: eps
+            real*8 :: fl
+            real*8 :: fl1
+            real*8 :: fl2
+            real*8 :: fl3
+            real*8 :: sfl3
+            integer :: nord
+            integer :: l
+            integer :: kount
+            integer :: knsw
+            integer :: ifanis
+            integer :: iback
+            common /shanks/ b,c,dx,step,stepf,maxo,in
+            common /bits/ pi,rn,vn,wn,w,wsq,wray,qinv,cg,tref,fct,eps,fl,fl1,fl2,fl3,sfl3,nord,l,kount,knsw,ifanis,iback
+        end subroutine ldetqn
+        subroutine rootf(wrad,flroot,detroot,x1,x2,d1,d2,tol) ! in :rayleigh_python:ltable_python.f
+            real*8 :: wrad
+            real*8 :: flroot
+            real*8 :: detroot
+            real*8 :: x1
+            real*8 :: x2
+            real*8 :: d1
+            real*8 :: d2
+            real*8 :: tol
+        end subroutine rootf
+        subroutine partials(y,dw,i) ! in :rayleigh_python:ltable_python.f
+            real*8 dimension(4) :: y
+            real*8 dimension(4) :: dw
+            integer :: i
+            real*8 :: pi
+            real*8 :: rn
+            real*8 :: vn
+            real*8 :: wn
+            real*8 :: w
+            real*8 :: wsq
+            real*8 :: wray
+            real*8 :: qinv
+            real*8 :: cg
+            real*8 :: tref
+            real*8 :: fct
+            real*8 :: eps
+            real*8 :: fl
+            real*8 :: fl1
+            real*8 :: fl2
+            real*8 :: fl3
+            real*8 :: sfl3
+            integer :: nord
+            integer :: ll
+            integer :: kount
+            integer :: knsw
+            integer :: ifanis
+            integer :: iback
+            real*8 dimension(1500) :: r
+            real*8 dimension(1500) :: fmu
+            real*8 dimension(1500) :: flam
+            real*8 dimension(1500) :: qshear
+            real*8 dimension(1500) :: qkappa
+            real*8 dimension(1500) :: xa2
+            real*8 dimension(1500) :: xlam
+            real*8 dimension(1500) :: rho
+            real*8 dimension(3,1500) :: qro
+            real*8 dimension(1500) :: g
+            real*8 dimension(3,1500) :: qg
+            real*8 dimension(1500) :: fcon
+            real*8 dimension(3,1500) :: fspl
+            real*8 dimension(1500) :: lcon
+            real*8 dimension(3,1500) :: lspl
+            real*8 dimension(1500) :: ncon
+            real*8 dimension(3,1500) :: nspl
+            real*8 dimension(1500) :: ccon
+            real*8 dimension(3,1500) :: cspl
+            real*8 dimension(1500) :: acon
+            real*8 dimension(3,1500) :: aspl
+            common /bits/ pi,rn,vn,wn,w,wsq,wray,qinv,cg,tref,fct,eps,fl,fl1,fl2,fl3,sfl3,nord,ll,kount,knsw,ifanis,iback
+            common r,fmu,flam,qshear,qkappa,xa2,xlam,rho,qro,g,qg,fcon,fspl,lcon,lspl,ncon,nspl,ccon,cspl,acon,aspl
+        end subroutine partials
+    end interface 
+end python module rayleigh_python
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/
