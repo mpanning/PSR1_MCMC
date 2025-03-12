@@ -108,7 +108,7 @@ c**** of the secular determinant as det and the count of zero crossings.
      +      y1(MAXL),dy1dr(MAXL),y2(MAXL),dy2dr(MAXL),dum(15*MAXL)
       common/rindx/nic,noc,nsl,nicp1,nocp1,nslp1,n
       common/stdep/ls,maxlayr
-      dimension ass(5),vf(MAXL),y(4),dwdp(4)
+      dimension ass(8),vf(MAXL),y(4),dwdp(4)
 
 c  nerr deals with negative group velocities (which violate assumptions)
       nerr=0
@@ -480,7 +480,7 @@ c*** propagate a minor vector in a solid region from level jf to jl ***
      +  fl1,fl2,fl3,sfl3,nord,l,kount,knsw,ifanis,iback
       common/eifx/ar(5,MAXL),inorm(MAXL),kdum(22*MAXL)
       common/shanks/b(46),c(10),dx,step(8),stepf,maxo,in
-      dimension f(5),h(nvesm,10),s(5),fp(5),rne(4)
+      dimension f(8),h(nvesm,10),s(8),fp(5),rne(4)
       maxo1=maxo-1
       jud=1
       if(jl.lt.jf) jud=-1
@@ -565,7 +565,7 @@ c*** propagate the minor vector in a fluid region from level jf to jl ***
      +  fl1,fl2,fl3,sfl3,nord,l,kount,knsw,ifanis,iback
       common/eifx/ar(5,MAXL),inorm(MAXL),kdum(22*MAXL)
       common/shanks/b(46),c(10),dx,step(8),stepf,maxo,in
-      dimension f(5),h(nvefm,10),s(2),fp(2)
+      dimension f(8),h(nvefm,10),s(8),fp(5)
       data econst/1048576.d0/
       if(nvefm.eq.1) then
         do 90 i=jl,jf
@@ -825,7 +825,7 @@ c    fprop propagates the fundamental matrix f from jf to jl (a fluid region)
       common/eifx/ar(5,MAXL),inorm(MAXL),kdum(22*MAXL)
       common/rindx/nic,noc,nsl,nicp1,nocp1,nslp1,n
       common/shanks/b(46),c(10),dx,step(8),stepf,maxo,in
-      dimension f(6),s(6),h(6,10)
+      dimension f(8),s(8),h(6,10)
       fac=(fl+.5d0)/sfl3
       d=fl3/wsq
       jud=1

@@ -317,7 +317,7 @@ python module rayleigh_python ! in
         subroutine sprpmn(jf,jl,f,h,nvesm,iexp) ! in :rayleigh_python:rayleigh_python.f
             integer :: jf
             integer :: jl
-            real*8 dimension(5) :: f
+            real*8 dimension(8) :: f
             real*8 dimension(nvesm,10) :: h
             integer, optional,check(shape(h,0)==nvesm),depend(h) :: nvesm=shape(h,0)
             integer :: iexp
@@ -383,7 +383,7 @@ python module rayleigh_python ! in
         subroutine fprpmn(jf,jl,f,h,nvefm,iexp) ! in :rayleigh_python:rayleigh_python.f
             integer :: jf
             integer :: jl
-            real*8 dimension(5) :: f
+            real*8 dimension(8) :: f
             real*8 dimension(nvefm,10) :: h
             integer, optional,check(shape(h,0)==nvefm),depend(h) :: nvefm=shape(h,0)
             integer :: iexp
@@ -606,7 +606,7 @@ python module rayleigh_python ! in
         subroutine efprop(jf,jl,f) ! in :rayleigh_python:rayleigh_python.f
             integer :: jf
             integer :: jl
-            real*8 dimension(6) :: f
+            real*8 dimension(8) :: f
             real*8 dimension(5,1500) :: ar
             integer dimension(1500) :: inorm
             integer dimension(33000) :: kdum
