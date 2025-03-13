@@ -6,7 +6,7 @@ FFLAGS = -O1 -fno-automatic
 
 OBJS = $(LOBJ)/rayleigh_python.o $(LOBJ)/ltable_python.o
 SRCS = rayleigh_python.f ltable_python.f
-F2PY = f2py-2.7
+F2PY = f2py
 F77 = gfortran
 
 
@@ -14,6 +14,7 @@ all: rayleigh_python.so
 
 rayleigh_python.so: $(OBJS) rayleigh_python.pyf
 	$(F2PY) -c rayleigh_python.pyf $(OBJS)
+	mv rayleigh_python.*.so rayleigh_python.so
 
 rayleigh_python.pyf: $(SRCS)
 	$(F2PY) --overwrite-signature -m rayleigh_python -h rayleigh_python.pyf $(SRCS)
