@@ -44,7 +44,7 @@ import pickle
 
 from MCMC_functions import (startmodel,MODEL,startchain,runmodel,finderror,
                             randINTF,accept_reject,mintwo,runmodel_bw,errorfig,
-                            accratefig,nlhist,sighhist,modfig,vdispfig)
+                            accratefig,nlhist,sighhist,modfig,vdispfig,maxtwo)
 
 # ----------------------------------------------------------------------------
 # ****************************************************************************
@@ -418,8 +418,9 @@ while (run < numrun):
         vrad = np.array([planet_radius-maxz, planet_radius])
         vmin = np.array([4.0, 4.0])
         vmax = np.array([7.5, 7.5])
-        delv = np.max(vmax) - np.min(vmin)
-        max_neg_grad = 0.0 # for now, no negative gradients
+        delv = vmax - vmin
+        # express the gradient as a negative number in km/s per km
+        max_neg_grad = 0.0 # for now, no negative gradients 
         
         # Bounds on hyper-parameters 
         hypswmin = 0.0
@@ -630,6 +631,7 @@ while (run < numrun):
                                         x.epiDistkm[ievt] = newdist
                                 vsOUT = copy.deepcopy(vsIN)
                                 BDi = 0
+                                delv1 = 0
                                 delv2 = 0
 
                         # Change origin time
@@ -656,11 +658,12 @@ while (run < numrun):
                                         x.epiTime[ievt] = newtime
                                 vsOUT = copy.deepcopy(vsIN)
                                 BDi = 0
+                                delv1 = 0
                                 delv2 = 0
 
                         # Change velocity of a layer (vi)
-                        # THIS IS BROKEN WITH VARIABLE VMIN/VMAX AND NEG GRAD
-                        # MUST FIX
+                        # Recently changed for variable velocity bounds and
+                        # not verified
                         if pDRAW == 2:
                                                 
                                 print(DRAW[pDRAW])
@@ -702,12 +705,36 @@ while (run < numrun):
                                               ']\n')
                                         print('wV1 = ' + str(wV1) + '\n')
 
+                                        #calculate bounds
+                                        radius = oldx.mantleR[pV-1]
+                                        rad1 = vrad[vrad >= radius][-1]
+                                        rad2 = vrad[vrad <= radius][0]
+                                        vmin1 = vmin[vrad >= radius][-1]
+                                        vmin2 = vmin[vrad <= radius][0]
+                                        vmax1 = vmax[vrad >= radius][-1]
+                                        vmax2 = vmax[vrad <= radius][0]
+
+                                        vmin_local = (vmin1 +
+                                                      (vmin2 - vmin1)*
+                                                      (radius - rad1)/
+                                                      (rad2 - rad1))
+                                        vmax_local = (vmax1 +
+                                                      (vmax2 - vmax1)*
+                                                      (radius - rad1)/
+                                                      (rad2 - rad1))
+                                        dint = (oldx.mantleR[pV-2] -
+                                                oldx.mantleR[pV-1])
+                                        gradvmin = (vsOUT[pV-1] +
+                                                    (max_neg_grad*dint))
+
                                         # if the new value is outside of 
-                                        # velocity range or creates a negative
-                                        # velocity gradient - REJECT
+                                        # velocity range or creates too large
+                                        # of a negative velocity gradient -
+                                        # REJECT
                                         
-                                        if ((vsOUT[pV] < vsOUT[pV-1]) or 
-                                            (vsOUT[pV] > vmax)):
+                                        if ((vsOUT[pV] <
+                                             maxtwo(gradvmin,vmin_local)) or 
+                                            (vsOUT[pV] > vmax_local)):
                                                 print('!!! Outside velocity ' +
                                                       'range allowed!!')
                                                 print('Automatically REJECT ' +
@@ -716,14 +743,45 @@ while (run < numrun):
                                 else:
                                         print('Perturb VS[' + str(pV) +']')
                                         print('wV1 = ' + str(wV1)) 
-                
+
+                                        #calculate bounds
+                                        radius = oldx.mantleR[pV-1]
+                                        rad1 = vrad[vrad >= radius][-1]
+                                        rad2 = vrad[vrad <= radius][0]
+                                        vmin1 = vmin[vrad >= radius][-1]
+                                        vmin2 = vmin[vrad <= radius][0]
+                                        vmax1 = vmax[vrad >= radius][-1]
+                                        vmax2 = vmax[vrad <= radius][0]
+
+                                        vmin_local = (vmin1 +
+                                                      (vmin2 - vmin1)*
+                                                      (radius - rad1)/
+                                                      (rad2 - rad1))
+                                        vmax_local = (vmax1 +
+                                                      (vmax2 - vmax1)*
+                                                      (radius - rad1)/
+                                                      (rad2 - rad1))
+                                        if (pV > 1):
+                                                dint = (oldx.mantleR[pV-2] -
+                                                        oldx.mantleR[pV-1])
+                                                gradvmin = (vsOUT[pV-1] +
+                                                            (max_neg_grad*dint))
+                                        else:
+                                                gradvmin = vmin_local
+
+                                        dint = (oldx.mantleR[pV-1] -
+                                                oldx.mantleR[pV])
+                                        gradvmax = (vsOUT[pV+1] -
+                                                    (max_neg_grad*dint))
+                                        
+               
                                         # if the new value is outside of 
                                         # velocity range or creates a negative
                                         # velocity gradient - REJECT
-                                        if ((vsOUT[pV] < vsOUT[pV-1]) or 
-                                            (vsOUT[pV] > vsOUT[pV+1]) or
-                                            (vsOUT[pV] < vmin) or 
-                                            (vsOUT[pV] > vmax)):
+                                        if ((vsOUT[pV] <
+                                             maxtwo(vmin_local,gradvmin)) or 
+                                            (vsOUT[pV] >
+                                             mintwo(vmax_local,gradvmax))):
                                                 print('!!! Outside velocity ' +
                                                       'range allowed!!')
                                                 print('Automatically REJECT ' +
@@ -731,6 +789,7 @@ while (run < numrun):
                                                 WARN_BOUNDS = 'ON'
                 
                                 BDi = 0
+                                delv1 = 0
                                 delv2 = 0
                                 x.crustVs = vsOUT[0]
                                 x.mantleVs = []
@@ -804,6 +863,7 @@ while (run < numrun):
                                 x.crustThick = intfOUT[0]
                                 x.mantleR = x.radius - intfOUT
                                 BDi = 0
+                                delv1 = 0
                                 delv2 = 0
 
                         # Create a new layer
@@ -835,9 +895,12 @@ while (run < numrun):
                                 # have check measures in place so that the 
                                 # interface cannot be within hmin of any of 
                                 # the existing interfaces
-                                (addI,intfOUT,vsOUT,WARN_BOUNDS,
-                                 BDi,delv2) = randINTF(vmin,vmax,chmin,hmin,
-                                                       maxz,intfIN,vsIN,thetaV2)
+                                (addI,intfOUT,vsOUT,WARN_BOUNDS,BDi,delv1,
+                                 delv2) = randINTF(vrad,vmin,vmax,delv,
+                                                   chmin,hmin,maxz,intfIN,
+                                                   vsIN,thetaV2,
+                                                   max_neg_grad,
+                                                   planet_radius)
                                 
                                 x.mantleR = x.radius - np.array(intfOUT)    
                                 x.crustThick = intfOUT[0]
@@ -869,6 +932,13 @@ while (run < numrun):
                                 # except crust or cmb
                                 kill_I = randint(1,(curNM))
                                 BDi = kill_I
+                                radius = oldx.mantleR[kill_I]
+                                rad1 = vrad[vrad >= radius][-1]
+                                rad2 = vrad[vrad <= radius][0]
+                                delv11 = delv[vrad >= radius][-1]
+                                delv22 = delv[vrad <= radius][0]
+                                delv1 = (delv11 + (delv22 - delv11)*
+                                          (radius-rad1)/(rad2-rad1))
                                 intfOUT = np.delete(intfIN, kill_I)
                                 print("removing interface["+str(kill_I)+"]")
                                 delv2 = vsIN[kill_I+1]-vsIN[kill_I-1]
@@ -921,6 +991,7 @@ while (run < numrun):
                                                 
                                 vsOUT = copy.deepcopy(vsIN)
                                 BDi = 0
+                                delv1 = 0
                                 delv2 = 0
 
                         x.crustVp = x.PS_scale * x.crustVs
@@ -1017,7 +1088,7 @@ while (run < numrun):
                                                                diagCE,
                                                                weight_opt)
                                                         
-                        pac,q = accept_reject(PHI,k,pDRAW,WARN_BOUNDS,delv,
+                        pac,q = accept_reject(PHI,k,pDRAW,WARN_BOUNDS,delv1,
                                               delv2,thetaV2,diagCE,vsIN,vsOUT,
                                               BDi)
         

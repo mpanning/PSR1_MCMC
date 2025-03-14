@@ -535,19 +535,18 @@ def runmodel_bw (x,phases):
         raise ValueError('Inconsistent nevts')
     dpre_bw = []
     for i in range(0,x.nevts):
-        print("Event {:d}\n".format(i))
+        # print("Event {:d}\n".format(i))
         dpre_bw.append(np.zeros(len(phases[i])))
         distdeg = x.epiDistkm[i] * 180.0/(x.radius*math.pi)
-        #print('test arrivals',x.hypDepth[i],distdeg,phases[i])
         arrivals = np.array(model.get_travel_times(source_depth_in_km=x.hypDepth[i], 
                                                    distance_in_degree=distdeg,
                                                    phase_list=phases[i]))
         # Extract arrival times 
         names = np.array([arrivals[j].name for j in range(len(arrivals))])
-        print(names)
+        # print(names)
         # Need to catch errors if phase is not found FIX THIS
         for j in range(0,len(phases[i])):
-            print(i,j,phases[i][j])
+            #print(i,j,phases[i][j])
             try:
                 dpre_bw[i][j] = (arrivals[names == phases[i][j]][0].time + 
                                  x.epiTime[i])
