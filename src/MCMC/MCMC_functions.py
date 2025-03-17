@@ -892,8 +892,8 @@ def sighhist(rep_cnt, repeat, SIGH, hypmin, hypmax, maxz_m, abc, run, SAVEF):
         Hfig = SAVEF + '/' + figname
         P.savefig(Hfig)
 # ----------------------------------------------------------------------------
-def modfig(rep_cnt,repeat,keptPHI,vmin,vmax,chosenmap,nummods,revPHIind,CHMODS,
-           Ult_ind,maxz_m,abc,run,SAVEF):
+def modfig(rep_cnt,repeat,keptPHI,vrad,vmin,vmax,chosenmap,nummods,revPHIind,
+           CHMODS,Ult_ind,maxz_m,abc,run,SAVEF):
         plt.close('all')
         minCBE=keptPHI.min()
         maxCBE=keptPHI.max()
@@ -944,7 +944,7 @@ def modfig(rep_cnt,repeat,keptPHI,vmin,vmax,chosenmap,nummods,revPHIind,CHMODS,
         cb=plt.colorbar(CS3)
         cb.set_label(r'$\phi$(m)', labelpad=-65)
         #plt.axis([0, vmax, 0, maxz_m])
-        plt.axis([0, vmax, curmod.mantleR[-1], curmod.radius])
+        plt.axis([0, np.max(vmax), curmod.mantleR[-1], curmod.radius])
         ax = plt.gca()
         #ax.set_ylim(ax.get_ylim()[::-1])
         ax.grid(True,linestyle='-',color='0.75',zorder=0)
@@ -966,8 +966,8 @@ def modfig(rep_cnt,repeat,keptPHI,vmin,vmax,chosenmap,nummods,revPHIind,CHMODS,
         return (CS3, scalarMap)
 # ----------------------------------------------------------------------------
 def vdispfig(rep_cnt,repeat,nummods,revPHIind,keptPHI,CHMODS,scalarMap,dobs_sw,
-             instpd,Ult_ind,weight_opt,wsig,pmin,pmax,vmin,vmax,CS3,maxz_m,abc,
-             run,SAVEF):
+             instpd,Ult_ind,weight_opt,wsig,pmin,pmax,vrad,vmin,vmax,CS3,
+             maxz_m,abc,run,SAVEF):
         plt.close('all')
         plt.figure
         # Figure out how many events we have
@@ -1053,7 +1053,9 @@ def vdispfig(rep_cnt,repeat,nummods,revPHIind,keptPHI,CHMODS,scalarMap,dobs_sw,
         print("SHOULD BE SAVING D Vert FIGURE RIGHT NOW!!!!")
 
 # ----------------------------------------------------------------------------
-def hdispfig(rep_cnt,repeat,nummods,revPHIind,keptPHI,CHMODS,scalarMap,dobs,instpd,Ult_ind,weight_opt,wsig,pmin,pmax,vmin,vmax,CS3,maxz_m,abc,run,SAVEF):
+def hdispfig(rep_cnt,repeat,nummods,revPHIind,keptPHI,CHMODS,scalarMap,dobs,
+             instpd,Ult_ind,weight_opt,wsig,pmin,pmax,vrad,vmin,vmax,CS3,
+             maxz_m,abc,run,SAVEF):
         plt.close('all')
         # loop through all kept models plotting one at a time
         jj=0

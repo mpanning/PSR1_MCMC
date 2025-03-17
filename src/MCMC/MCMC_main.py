@@ -147,7 +147,6 @@ ndsub[1] = len(np.concatenate(dobs_bw))
 #layopt = ([2, 3, 4, 5])
 layopt = ([3])
 botopt = ([2891.0]) #core-mantle boundary depth
-#botopt = ([0.2, 0.4, 0.6])
 repeat = 1
 all_letters = list(string.ascii_lowercase)
 letters = all_letters[0:repeat]
@@ -164,12 +163,14 @@ DRAW = ['CHANGE EPICENTRAL DISTANCE: Perturb an epicentral distance <->',
 # ----------------
 # totch = 10                        # Total number of chains
 # numm = 1000
-totch = 1
-numm = 10000                        # Number of iterations per chain
+# totch = 1
+# numm = 10000          # Number of iterations per chain
+totch = 2
+numm = 2000
 # ----------------
 # ---------------------------------------------------------------------------------------
 # ----------------
-BURN = 2000
+BURN = 500
 # BURN = 2000                # Number of models designated BURN-IN, gets discarded
 # M = 10                        # Interval to keep models (e.g. keep every 100th model, M=100)
 M = 10
@@ -1147,20 +1148,20 @@ while (run < numrun):
                                         CHMODS.append(x)
                                         modl = x.filename
                                         curlocation = MAIN + '/' + modl
-                                        newfilename = ('M' + str(ii) + '_' + 
+                                        newfilename = ('M' + str(k) + '_' + 
                                                        abc[run] + '_' + 
                                                        str(chain)+ '_' + modl)
                                         newlocation = SAVEF + '/' + newfilename
                                         shutil.copy2(curlocation, newlocation)
                                         # Try to also save a binary version of the
                                         # MODEL class object
-                                        classOutName = ('M' + str(ii) + '_' + 
+                                        classOutName = ('M' + str(k) + '_' + 
                                                         abc[run] + '_' + 
                                                         str(chain) + '_' + modl +
                                                         '.pkl')
                                         newlocation = SAVEF + '/' + classOutName
                                         with open(newlocation, 'wb') as output:
-                                                pickle.dump(sample, output, -1)
+                                                pickle.dump(x, output, -1)
                                         keep_cnt = keep_cnt + 1
 
                                 #### Remove all models from current chain ####
@@ -1296,15 +1297,15 @@ while (run < numrun):
         
         # ==================== PLOT [1] ==================== 
         # ================ Velocity Models =================
-        CS3,scalarMap=modfig(rep_cnt,repeat,keptPHI,vmin,vmax,chosenmap,
+        CS3,scalarMap=modfig(rep_cnt,repeat,keptPHI,vrad,vmin,vmax,chosenmap,
                              nummods,revPHIind,CHMODS,Ult_ind,maxz_m,abc,run,
                              SAVEF)
         
         # ==================== PLOT [2] ==================== 
         # =========== Dispersion Curve Vertical ============
         vdispfig(rep_cnt,repeat,nummods,revPHIind,keptPHI,CHMODS,scalarMap,
-                 dobs_sw,cp,Ult_ind,weight_opt,wsig,cpmin,cpmax,vmin,vmax,CS3,
-                 maxz_m,abc,run,SAVEF)
+                 dobs_sw,cp,Ult_ind,weight_opt,wsig,cpmin,cpmax,vrad,vmin,vmax,
+                 CS3,maxz_m,abc,run,SAVEF)
         
         # ==================== PLOT [3] ==================== 
         # ========== Dispersion Curve Horizontal ===========
@@ -1340,15 +1341,15 @@ while (run < numrun):
         
                 # ==================== PLOT [1] ==================== 
                 # ================ Velocity Models =================
-                CS3,scalarMap=modfig(rep_cnt,repeat,runPHI,vmin,vmax,chosenmap,
-                                     rnummods,revrunind,RUNMODS,rUlt_ind,
-                                     maxz_m,abc,run,SAVEF)
+                CS3,scalarMap=modfig(rep_cnt,repeat,runPHI,vrad,vmin,vmax,
+                                     chosenmap,rnummods,revrunind,RUNMODS,
+                                     rUlt_ind,maxz_m,abc,run,SAVEF)
                      
                 # ==================== PLOT [2] ==================== 
                 # =========== Dispersion Curve Vertical ============
                 vdispfig(rep_cnt,repeat,rnummods,revrunind,runPHI,RUNMODS,
                          scalarMap,dobs_sw,cp,rUlt_ind,weight_opt,wsig,cpmin,
-                         cpmax,vmin,vmax,CS3,maxz_m,abc,run,SAVEF)
+                         cpmax,vrad,vmin,vmax,CS3,maxz_m,abc,run,SAVEF)
 
                 # ==================== PLOT [3] ==================== 
                 # ========== Dispersion Curve Horizontal ===========
