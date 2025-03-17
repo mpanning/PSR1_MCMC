@@ -1,6 +1,6 @@
 # Load up all saved models in SAVE directory and make plots
 import numpy as np
-import cPickle as pickle
+import pickle
 import os
 import glob
 import copy
@@ -27,7 +27,7 @@ for file in model_list:
         CHMODS.append(pickle.load(input))
 
 nummods = len(CHMODS)
-print 'Read ' + str(nummods) + ' models'
+print('Read ' + str(nummods) + ' models')
 
 # Loop over models and gather info
 keptPHI = []
@@ -54,11 +54,15 @@ Ult_ind = PHIind[0]
 revPHIind = PHIind[::-1]
 # Specify colormap for plots
 chosenmap='brg_r'
-vmin = 4.0
-vmax = 7.5
+# vmin = 4.0
+# vmax = 7.5
 rep_cnt = 1
 repeat = 1
 maxz_m = 2891.0
+planet_radius = CHMODS[0].radius
+vrad = np.array([planet_radius-maxz_m, planet_radius])
+vmin = np.array([4.0, 4.0])
+vmax = np.array([7.5, 7.5])
 abc = 'a'
 run = 0
 weight_opt = 'ON'
@@ -113,8 +117,8 @@ f = open(masterfile)
 line = f.readline()
 nevts_bw = int(line.split()[0])
 if (not(nevts_bw == nevts)):
-	print 'Inconsistent events for body wave and surface waves'
-	print nevts,nevts_bw
+	print('Inconsistent events for body wave and surface waves')
+	print(nevts,nevts_bw)
 	raise ValueError("nevts do not match")
 bwfiles = []
 for i in range(0,nevts):
@@ -141,7 +145,7 @@ for i in range(0,nevts):
 # make single data array
 dobs = np.concatenate([np.concatenate(dobs_sw), np.concatenate(dobs_bw)])
 ndata = len(dobs)
-ndsub = np.zeros(2, dtype=np.int)
+ndsub = np.zeros(2, dtype=np.int64)
 ndsub[0] = len(np.concatenate(dobs_sw))
 ndsub[1] = len(np.concatenate(dobs_bw))
 	
@@ -152,7 +156,7 @@ bwtime_sig = 0.5
 wsig_sw = []
 bsig_sw = []
 for i in range(0,nevts):
-	wsig_sw.append(np.zeros(fnum[i]))
+	wsig_sw.append(np.zeros(int(fnum[i])))
 	wsig_sw[i] = cp[i]*gtime_relsig #relative to center period
 	bsig_sw.append(np.zeros(len(phases[i])))
 	bsig_sw[i][:] = bwtime_sig
@@ -160,12 +164,12 @@ for i in range(0,nevts):
 # Make single vector of wsig
 wsig = np.concatenate([np.concatenate(wsig_sw), np.concatenate(bsig_sw)])
 if (not(len(wsig) == ndata)):
-	print 'Problem with wsig'
+	print('Problem with wsig')
 	raise ValueError('Inconsistent ndata')
 
 # ==================== PLOT [1] ==================== 
 # ================ Velocity Models =================
-CS3,scalarMap=modfig(rep_cnt,repeat,keptPHI,vmin,vmax,chosenmap,
+CS3,scalarMap=modfig(rep_cnt,repeat,keptPHI,vrad,vmin,vmax,chosenmap,
                      nummods,revPHIind,CHMODS,Ult_ind,maxz_m,abc,run,
                      MAIN)
 
@@ -173,5 +177,5 @@ CS3,scalarMap=modfig(rep_cnt,repeat,keptPHI,vmin,vmax,chosenmap,
 # ==================== PLOT [2] ==================== 
 # ============== Group Times Vertical ==============
 vdispfig(rep_cnt,repeat,nummods,revPHIind,keptPHI,CHMODS,scalarMap,
-         dobs_sw,cp,Ult_ind,weight_opt,wsig,cpmin,cpmax,vmin,vmax,CS3,
+         dobs_sw,cp,Ult_ind,weight_opt,wsig,cpmin,cpmax,vrad,vmin,vmax,CS3,
          maxz_m,abc,run,MAIN)
