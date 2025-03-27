@@ -73,7 +73,7 @@ c      read(ifin,*)
 c      read(ifin,fmt='(a256)') filnam
 c      open(9,file='dummyeig',form='unformatted')
 c EDIT MODELN TO NOT USE OUTPUT FILES
-c      call modeln(7,8,9)
+c     call modeln(7,8,9)
       call modeln(7)
       close(7)            
 c      close(9)
@@ -81,7 +81,7 @@ c      open(9,file=filnam,form='unformatted')
 c      call ltable(ifin,8,9,1)
       mtype=1
       call ltable(mtype,epsarg,npow,dt,fnyquist,nbran,cmin,cmax,maxlyr,
-     * modearray,nmodes)
+     *     modearray,nmodes)
 c      close(9)
 c      close(8)
 c      close(ifin)
@@ -1184,7 +1184,7 @@ c      write(iout,905) (i,r(i),rho(i),vpv(i),vph(i),vsv(i),vsh(i),
 c     1 eta(i),qshear(i),qkappa(i),i=1,n)
 c  905 format(3x,i3,f12.1,5f12.2,f12.5,2f12.2)
 c  30  continue
-      if(r(n).lt.6.e6.or.rho(n).lt.500.0.or.vpv(n).lt.100.0) then
+      if(r(n).lt.3.e6.or.rho(n).lt.500.0.or.vpv(n).lt.100.0) then
 	write(6,*) 'WARNING!!!! Is your input in MKS units???'
 c	write(iout,*) 'WARNING!!!! Is your input in MKS units???'
 c if not MKS units --> make MKS units:  (SL Aug 93)
